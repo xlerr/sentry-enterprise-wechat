@@ -11,6 +11,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\VarDumper;
 
 class Target extends \yii\log\Target
 {
@@ -47,10 +48,24 @@ class Target extends \yii\log\Target
     public $chatId;
 
     /**
-     * @var int error msg max length
+     * @var int error msg max length, 0 does not process
      */
-    public $msgMaxLength = 500;
+    public $msgMaxLength = 0;
 
+    /**
+     * @var mixed
+     */
+    public $exceptMatchMsg;
+
+    /**
+     * @var string
+     */
+    public static $exceptMsgPattern;
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\UserException
+     */
     public function init()
     {
         if (is_string($this->config)) {
@@ -64,7 +79,12 @@ class Target extends \yii\log\Target
         if (!is_array($this->config)) {
             throw new InvalidConfigException(__CLASS__ . '::$config can only be an Array or String, NULL is disabled.');
         }
+
         Yii::configure($this, $this->config);
+
+        if (!empty($this->exceptMatchMsg)) {
+            self::$exceptMsgPattern = sprintf('/%s/', implode('|', array_map('preg_quote', (array)$this->exceptMatchMsg)));
+        }
 
         if (empty($this->chatId)) {
             throw new InvalidConfigException(__CLASS__ . '::$chatId cannot be empty!');
@@ -119,16 +139,15 @@ class Target extends \yii\log\Target
         return $stack;
     }
 
-    /**
-     * 发送消息
-     *
-     * @param string $message 消息内容
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function send($message)
+    public function export()
     {
-        return $this->httpClient->post('WeWork/groupChat', [
+        $message = implode("\n", array_map([$this, 'formatMessage'], $this->messages));
+
+        if (($msgMaxLength = (int)$this->msgMaxLength) > 0) {
+            $message = substr($message, 0, $msgMaxLength);
+        }
+
+        $this->httpClient->post('WeWork/groupChat', [
             RequestOptions::FORM_PARAMS => [
                 'chatId'   => $this->chatId,
                 'message'  => $message,
@@ -138,9 +157,33 @@ class Target extends \yii\log\Target
         ]);
     }
 
-    public function export()
+    /**
+     * @param array $messages
+     * @param int   $levels
+     * @param array $categories
+     * @param array $except
+     *
+     * @return array
+     */
+    public static function filterMessages($messages, $levels = 0, $categories = [], $except = [])
     {
-        $message = implode("\n", array_map([$this, 'formatMessage'], $this->messages));
-        $this->send(substr($message,0, $this->msgMaxLength));
+        $messages = parent::filterMessages($messages, $levels, $categories, $except);
+
+        if (empty(self::$exceptMsgPattern)) {
+            return $messages;
+        }
+
+        $pattern = self::$exceptMsgPattern;
+
+        return array_filter($messages, function ($message) use ($pattern) {
+            list($text) = $message;
+            if ($text instanceof \Throwable || $text instanceof \Exception) {
+                $text = (string)$text;
+            } else {
+                $text = VarDumper::export($text);
+            }
+
+            return !preg_match($pattern, $text);
+        });
     }
 }

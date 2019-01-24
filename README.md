@@ -24,22 +24,15 @@ composer require xlerr\sentry-enterprise-wechat
                 'config' => [
                     'host' => 'http://api.myhost.com',
                     'chatId' => 'chatId',
+                    // 'enabled' => true,
+                    // 'categories' => [],
+                    // 'except' => [],
+                    // 'logVars' => [],
+                    // 'msgMaxLength' => 0,
+                    // 'exceptMatchMsg' => [],
                 ],
             ],
         ],
     ],
 ]
-```
-
-array config
-```json
-{
-    "host": "http://api.myhost.com",
-    "chatId": "chatId",
-    "enabled": true, // @see yii\log\Target::$enabled
-    "categories": [],  // @see yii\log\Target::$categories
-    "except": [], // @see yii\log\Target::$except
-    "logVars": [], // @see yii\log\Target::$logVars, defaults to []
-    "msgMaxLength": 500, // max length of message, defaults to 500
-}
 ```
