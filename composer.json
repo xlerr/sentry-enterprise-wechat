@@ -1,6 +1,5 @@
 {
-  "name": "xlerr/sentry-enterprise-wechat",
-  "version": "1.0.0",
+  "name": "xlerr/sentry-ewechat",
   "type": "library",
   "license": "MIT",
   "authors": [
