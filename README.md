@@ -7,7 +7,7 @@ enterprise wechat
 ### install
 
 ```shell
-composer require xlerr\sentry-enterprise-wechat
+composer require xlerr/sentry-ewechat
 ```
 
 ### config
@@ -21,6 +21,9 @@ composer require xlerr\sentry-enterprise-wechat
                 'levels' => ['error', 'warning'],
                 // 'config' => null, // default value, is disabled.
                 // 'config' => 'wechatSentryConfig', // a string, read from [[kvmanager\models\KeyValue]] by this string.
+                // 'config' => function () {
+                //     return [];
+                // },
                 'config' => [
                     'host' => 'http://api.myhost.com',
                     'chatId' => 'chatId',

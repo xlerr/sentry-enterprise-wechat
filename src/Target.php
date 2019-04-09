@@ -70,6 +70,8 @@ class Target extends \yii\log\Target
     {
         if (is_string($this->config)) {
             $this->config = KeyValue::getValueAsArray($this->config, false);
+        } elseif ($this->config instanceof \Closure) {
+            $this->config = call_user_func($this->config);
         }
 
         if (null === $this->config) {
