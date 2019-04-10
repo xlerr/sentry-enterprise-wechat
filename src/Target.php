@@ -60,6 +60,11 @@ class Target extends \yii\log\Target
     /**
      * @var string
      */
+    public $system = '';
+
+    /**
+     * @var string
+     */
     public static $exceptMsgPattern;
 
     /**
@@ -152,7 +157,7 @@ class Target extends \yii\log\Target
         $this->httpClient->post('WeWork/groupChat', [
             RequestOptions::FORM_PARAMS => [
                 'chatId'   => $this->chatId,
-                'message'  => $message,
+                'message'  => $this->system . $message,
                 'ident'    => md5($message),
                 'unitTime' => 30,
             ],
