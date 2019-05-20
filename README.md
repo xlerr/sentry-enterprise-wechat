@@ -33,6 +33,7 @@ composer require xlerr/sentry-ewechat
                     // 'logVars' => [],
                     // 'msgMaxLength' => 0,
                     // 'exceptMatchMsg' => [],
+                    // 'system' => "[DEPOSIT]\n",
                 ],
             ],
         ],
