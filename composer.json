@@ -10,7 +10,6 @@
   ],
   "require": {
     "yiisoft/yii2": "^2.0",
-    "xlerr/kvmanager": "^1.1",
     "guzzlehttp/guzzle": "^6.3"
   },
   "autoload": {

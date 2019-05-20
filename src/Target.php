@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\RequestOptions;
-use kvmanager\models\KeyValue;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Yii;
@@ -73,21 +72,17 @@ class Target extends \yii\log\Target
      */
     public function init()
     {
-        if (is_string($this->config)) {
-            $this->config = KeyValue::getValueAsArray($this->config, false);
-        } elseif ($this->config instanceof \Closure) {
-            $this->config = call_user_func($this->config);
-        }
+        $config = is_callable($this->config) ? call_user_func($this->config) : $this->config;
 
-        if (null === $this->config) {
+        if (null === $config) {
             return $this->setEnabled(false);
         }
 
-        if (!is_array($this->config)) {
+        if (!is_array($config)) {
             throw new InvalidConfigException(__CLASS__ . '::$config can only be an Array or String, NULL is disabled.');
         }
 
-        Yii::configure($this, $this->config);
+        Yii::configure($this, $config);
 
         if (!empty($this->exceptMatchMsg)) {
             self::$exceptMsgPattern = sprintf('/%s/', implode('|', array_map('preg_quote', (array)$this->exceptMatchMsg)));
