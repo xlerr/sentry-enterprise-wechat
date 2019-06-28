@@ -9,12 +9,23 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "^2.0",
-    "guzzlehttp/guzzle": "^6.3"
+    "guzzlehttp/guzzle": "^6.3",
+    "yiisoft/yii2": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.2"
   },
   "autoload": {
     "psr-4": {
       "xlerr\\sentry\\ewechat\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "xlerr\\sentry\\ewechat\\test\\": "test/"
+    }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

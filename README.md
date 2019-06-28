@@ -20,7 +20,6 @@ composer require xlerr/sentry-ewechat
                 'class' => \xlerr\sentry\ewechat\Target::class,
                 'levels' => ['error', 'warning'],
                 // 'config' => null, // default value, is disabled.
-                // 'config' => 'wechatSentryConfig', // a string, read from [[kvmanager\models\KeyValue]] by this string.
                 // 'config' => function () {
                 //     return \kvmanager\models\KeyValue::getValueAsArray('sentry_ewechat_config');
                 //     // or
