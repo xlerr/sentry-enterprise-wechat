@@ -1,7 +1,7 @@
 sentry
 ================
 
-enterprise wechat
+enterprise wechat [![Build Status](https://www.travis-ci.org/xlerr/sentry-ewechat.svg?branch=master)](https://www.travis-ci.org/xlerr/sentry-ewechat)
 ----------------
 
 ### install
