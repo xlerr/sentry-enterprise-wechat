@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": "^7.0.0",
+    "php": "^7.1",
     "guzzlehttp/guzzle": "^6.3",
     "yiisoft/yii2": "^2.0"
   },
