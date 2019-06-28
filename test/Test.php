@@ -11,7 +11,7 @@ final class Test extends TestCase
 {
     private $target;
 
-    public function setUp(): void
+    protected function setUp()
     {
         $this->target = new Target([
             'config' => [],
